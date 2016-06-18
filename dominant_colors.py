@@ -8,7 +8,7 @@ import math
 import random
 
 def getpixels (pixels):
-    # Selects 50 random positions
+    # Selects 100 random positions
     # Creates a list using the indexs of randompositions and pixels list
     # Returns selectedpixels list of tuples (R,G,B,Cluster Assignment('x' by default))
     
