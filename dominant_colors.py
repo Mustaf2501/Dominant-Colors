@@ -75,6 +75,7 @@ def centroids (selectedpixels,k):
             x = 0
         if comparison == centers:
             return centers
+
 def hexadecimal(centroids):
     for x in centroids:
         print('#%02x%02x%02x' % tuple(x))
