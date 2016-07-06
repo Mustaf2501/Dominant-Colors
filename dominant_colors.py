@@ -94,14 +94,9 @@ while(1):
         print("Select the file to find its dominant colors") 
         root = Tkinter.Tk()
         dirname = tkFileDialog.askopenfilename()
-
         k = 3
-
-        #image = Image.open(dirname, 'r')
-        #width, height = image.size
-
+        
         pixels = resize(dirname) 
-
         print(hexadecimal((centroids(default(pixels),k))))
         
     else:
