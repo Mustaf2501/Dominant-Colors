@@ -101,8 +101,3 @@ while(1):
         
     else:
         break
-        
-    
-
-        
-    
