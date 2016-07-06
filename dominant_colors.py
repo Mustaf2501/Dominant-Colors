@@ -7,29 +7,19 @@ import Tkinter, tkFileDialog
 import math 
 import random
 
-def getpixels (pixels):
-    # Selects 100 random positions
-    # Creates a list using the indexs of randompositions and pixels list
-    # Returns selectedpixels list of tuples (R,G,B,Cluster Assignment('x' by default))
+def default (pixels):
     
-    randompositions = list(range(0,100))
+    # Returns pixels list of tuples (R,G,B,Cluster Assignment('x' by default))
+  
+    pixels = [list(x)+ list(('x',)) for x in pixels]
+    
+    return pixels
 
-    for i in list(range (0,100)):
-        x = random.randint(0,len(pixels))
-        if x in randompositions:
-            i = i - 1
-        else :
-            randompositions[i] = x
-    selectedpixels = [list(pixels[j])+ list(('x',)) for j in randompositions]
-
-
-    return selectedpixels
-
-def centroids (selectedpixels,k):
-    # Checks whether the selectedpixels list is set to default
+def centroids (pixels,k):
+    # Checks whether the pixels list is set to default
     # Generates k cluster points in an (R,G,B) color model
     
-    if selectedpixels[0][3] == 'x':
+    if pixels[0][3] == 'x':
         
         centers = [[0] for f in range(0,k)]
 
@@ -52,7 +42,7 @@ def centroids (selectedpixels,k):
     while(1):
         comparison = list(centers)
         
-        for x in selectedpixels:
+        for x in pixels:
             for i in range(0,k):
                 distances[i] = math.sqrt(((x[0] - centers[i][0])**2+(x[1] - centers[i][1])**2+(x[2] - centers[i][2])**2))
                 if i == k - 1:
@@ -61,7 +51,7 @@ def centroids (selectedpixels,k):
         for x in range(0,k):
             centers[x] = reset[x]
             
-        for x in selectedpixels:
+        for x in pixels:
             centers[x[3]][0] = centers[x[3]][0] + x[0]
             centers[x[3]][1] = centers[x[3]][1] + x[1]
             centers[x[3]][2] = centers[x[3]][2] + x[2]
@@ -79,6 +69,19 @@ def centroids (selectedpixels,k):
 def hexadecimal(centroids):
     for x in centroids:
         print('#%02x%02x%02x' % tuple(x))
+
+def resize(dirname):
+   # Resizes image to allow for faster color sampling
+   
+   basewidth = 200
+   img = Image.open(dirname)
+   wpercent = (basewidth / float(img.size[0]))
+   hsize = int((float(img.size[1]) * float(wpercent)))
+   img = img.resize((basewidth, hsize))
+   img.save(dirname) 
+
+   return list(img.getdata())
+
      
 while(1):
     # Allows user to select an image
@@ -91,14 +94,19 @@ while(1):
         root = Tkinter.Tk()
         dirname = tkFileDialog.askopenfilename()
 
-        k = input('Enter the amount of clusters')
-        image = Image.open(dirname, 'r')
-        width, height = image.size
-        pixels = list(image.getdata())
+        k = 3
 
-        print(hexadecimal((centroids(getpixels(pixels),k))))
+        #image = Image.open(dirname, 'r')
+        #width, height = image.size
+
+        pixels = resize(dirname) 
+
+        print(hexadecimal((centroids(default(pixels),k))))
         
     else:
         break
+        
+    
+
         
     
