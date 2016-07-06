@@ -67,6 +67,7 @@ def centroids (pixels,k):
             return centers
 
 def hexadecimal(centroids):
+   # Prints the hexadecimal value of each cluster centroid (Dominant Color)
     for x in centroids:
         print('#%02x%02x%02x' % tuple(x))
 
